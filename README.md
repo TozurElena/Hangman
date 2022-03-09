@@ -1,7 +1,7 @@
 # Hangman
 ## A website version of the hangman word game
 
-##The hangman **should:**
+### The hangman **should:**
 
 - propose an hidden word
 - allow the selection of letters
