@@ -4,10 +4,10 @@ const words = ["informatique", "branche", "ordinateur", "école", "université",
 
 
 function greeting(turnCount, answerArray) {
-    document.getElementById('guessOfPlayer').style.display = 'none';
-    document.getElementById("displayStatus").innerHTML = "\"Hangman\" –  игра на угадывание слов. В нашем варианте " +
-    "компьютер будет загадывать слово, а вы отгадывать его. <br> <br> У Вас будет " + turnCount + " попыток.<br><br>" +
-    "Загаданое компьютером слово:<br>" + answerArray.join(" ") + "<br><br>Нажмите Далее, чтобы начать.";  // полностью описать правила
+    document.getElementById('guessOfPlayer').style.visibility = 'hidden';
+    document.getElementById("displayStatus").innerHTML = "\"Hangman\" –  un jeu de devinette de mots.  " +
+    "L'ordinateur crée le mot, et vous le devinerez par lettres. <br> <br> Vous avez " + turnCount + " chances.<br><br>" +
+    "Mot généré par ordinateur:<br>" + answerArray.join(" ") + "<br><br>Cliquez  Next, pour commencer.";  // полностью описать правила
 }
 
 function pickWord(words) {
@@ -15,7 +15,7 @@ function pickWord(words) {
 }
 
 function setupAnswerArray(word) {
-    var answerArray = [];
+    let answerArray = [];
     for (var i = 0; i < word.length; i++) {
         answerArray[i] = "_";
     }
@@ -23,9 +23,9 @@ function setupAnswerArray(word) {
 }
 
 function openLettersAndNotify(guess, word, answerArray, remainingLetters) {
-    var correctLetter = false;
+    let correctLetter = false;
     alreadyUsedLetters.push(guess);
-    for (var j = 0; j < word.length; j++) {
+    for (let j = 0; j < word.length; j++) {
         if (word[j] === guess && answerArray[j] == "_") {
             answerArray[j] = guess;
             remainingLetters--;
@@ -45,12 +45,12 @@ function openLettersAndNotify(guess, word, answerArray, remainingLetters) {
         } else {
             if (correctLetter == false) {
                 turnCount--;
-                document.getElementById('guessOfPlayer').style.display = 'none';
+                document.getElementById('guessOfPlayer').style.visibility = 'hidden';
                 document.getElementById("displayStatus").innerHTML = "К сожалению, данной буквы в слове нет:<br>"+answerArray.join(" ")
                  + "<br>У Вас осталось попыток: " + turnCount;
                  document.getElementById("showAlreadyUsedLetters").innerHTML = 'Использованные буквы:<br>' + alreadyUsedLetters.join(', ');;
             } else {
-                document.getElementById('guessOfPlayer').style.display = 'none';
+                document.getElementById('guessOfPlayer').style.visibility = 'hidden';
                 document.getElementById("displayStatus").innerHTML = "Введённая Вами буква верна:<br>" + answerArray.join(" ")
                  +  "<br>У Вас осталось попыток: " + turnCount;
                  document.getElementById("showAlreadyUsedLetters").innerHTML = 'Использованные буквы:<br>' + alreadyUsedLetters.join(', ');;
@@ -74,13 +74,16 @@ function showAnswerAndRatePlayer(turnCount, word) {
     document.getElementById("guessOfPlayer").style.display = 'none';
     document.getElementById("interactWithPlayer").style.display = 'none';
     document.getElementById("confirmActions").style.display = 'none';
-    // document.getElementById("exitButton").style.display = 'none';
+    document.getElementById("exitButton").style.display = 'none';
     document.getElementById("restartGame").style.visibility = 'visible';
+    document.getElementById('stopButton').style.visibility = 'visible';
 }
 
 function confirmActions(word, answerArray) {
-    document.getElementById('guessOfPlayer').style.display = 'block';
+    document.getElementById('guessOfPlayer').style.visibility = 'visible';
+    document.getElementById('guessOfPlayer').focus();
     if (counterOfConfirmActions % 2 == 0) {
+        
         document.getElementById("displayStatus").innerHTML = "Введите букву, которая по-вашему мнению есть в слове: ";
         document.getElementById("showAlreadyUsedLetters").innerHTML = 'Использованные буквы:<br>' + alreadyUsedLetters.join(', ');
         counterOfConfirmActions += 1;
@@ -99,6 +102,9 @@ function confirmActions(word, answerArray) {
             counterOfConfirmActions += 1;
         }
     }
+    document.getElementById('guessOfPlayer').value = '';
+    
+
 }
 
 let alreadyUsedLetters = [];
@@ -112,9 +118,17 @@ function startGame(turnCount, answerArray) {
 
 function exitGame(word) {
     document.getElementById("displayStatus").innerHTML = "C'est dommage que tu aies mis fin au jeu. Il y a eu un mot perplexe : " + word + ".";
-    document.getElementById("guessOfPlayer").style.display = 'none';
-    document.getElementById("interactWithPlayer").style.display = 'none';
+    document.getElementById("guessOfPlayer").style.visibility = 'hidden';
+    document.getElementById("interactWithPlayer").style.visibility = 'hidden';
     document.getElementById("confirmActions").style.display = 'none';
     document.getElementById("exitButton").style.display = 'none';
     document.getElementById("restartGame").style.visibility = 'visible';
+    document.getElementById('stopButton').style.visibility = 'visible';
 }
+
+document.getElementById('stopButton').addEventListener('click', () => {
+    let result = confirm ('Voulez-vous quitter?');
+    if (result) {alert('Aurevoir!'); window.close();} 
+        else alert('merci que rester');
+})
+    

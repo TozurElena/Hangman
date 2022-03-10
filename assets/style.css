@@ -27,6 +27,7 @@ div#exit {
 }
 
 input {
+  align-items: center;
   outline: none;
   border-width: 1px;
   margin: 15px;
@@ -63,6 +64,7 @@ button {
 }
 
 button#confirmActions {
+  margin-top: 25px;
   font-size: 25px;
   transition: 0.7s;
   background-color: hsl(220, 100%, 50%);
@@ -90,6 +92,20 @@ button#exitButton:hover {
   box-shadow: 0 0 15px 0 hsl(0, 100%, 50%);
 }
 
+button#stopButton {
+  visibility: hidden;
+  font-size: 20px;
+  transition: 0.7s;
+  background-color: hsl(0, 100%, 50%);
+}
+button#stopButton:hover {
+  font-size: 20px;
+  -webkit-transform: scale(1.05);
+  -ms-transform: scale(1.05);
+  transform: scale(1.05);
+  background-color: hsl(0, 100%, 50%);
+  box-shadow: 0 0 15px 0 hsl(0, 100%, 50%);
+}
 button#restartGame {
   text-align: center;
   margin: 15px;
