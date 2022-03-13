@@ -122,3 +122,9 @@ button#restartGame:hover {
   background-color: hsl(220, 100%, 50%);
   box-shadow: 0 0 15px 0 hsl(220, 100%, 50%);
 }
+#imgReaction {
+  float: left;
+  align-items: center;
+  margin-left: 200px;
+  width: 25%;
+}

@@ -1,9 +1,16 @@
 let turnCount = 11;
 let counterOfConfirmActions = 0;
 const words = ["informatique", "branche", "ordinateur", "école", "université", "application", "dossier", "fichier", "licence", "logiciel", "matériel", "multimédia", "raccourcis", "serveur", "curseur", "arborescence", "corbeille", "environnement", "freeware", "interactif", "interface", "internaute", "bluetooth", "manuel", "langage", "lecteur", "mémoire", "moniteur", "multimédia", "navigateur", "document", "pirate", "processeur", "raccourci", "redémarrer", "réseau", "télémaintenance", "téléphone", "imprimante", "algorithme", "balise", "cybersécurité", "framework", "hackathon", "multiplateforme", "programmation", "résolution", "responsive", "robotique", "script", "software", "tutoriel", "unicode"];
+let alreadyUsedLetters = [];
+let img =  document.getElementById('imgReaction');
 
+
+function startGame(turnCount, answerArray) {
+    greeting(turnCount, answerArray);
+}
 
 function greeting(turnCount, answerArray) {
+    img.style.visibility = 'hidden';
     document.getElementById('guessOfPlayer').style.visibility = 'hidden';
     document.getElementById("displayStatus").innerHTML = "\"Hangman\" –  un jeu de devinette de mots.  " +
     "L'ordinateur crée le mot, et vous le devinez lettre par lettre. <br> <br> Vous avez " + turnCount + " essais.<br><br>" +
@@ -13,6 +20,10 @@ function greeting(turnCount, answerArray) {
 function pickWord(words) {
     return words[Math.floor(Math.random() * words.length)];
 }
+
+let word = pickWord(words);
+let remainingLetters = word.length;
+let answerArray = setupAnswerArray(word);
 
 function setupAnswerArray(word) {
     let answerArray = [];
@@ -43,18 +54,22 @@ function openLettersAndNotify(guess, word, answerArray, remainingLetters) {
                 showAnswerAndRatePlayer(turnCount, word);
             }
         } else {
+            img.style.visibility = 'visible';
             if (correctLetter == false) {
                 turnCount--;
                 document.getElementById('guessOfPlayer').style.visibility = 'hidden';
+                img.src = "assets/img/smileErreur.webp";
                 document.getElementById("displayStatus").innerHTML = "Malhereusement, ce mot ne contient pas cette lettre:<br>"+answerArray.join(" ")
                  + "<br>Il vous reste essais: " + turnCount;
-                 document.getElementById("showAlreadyUsedLetters").innerHTML = 'Les lettres utilisées:<br>' + alreadyUsedLetters.join(', ');;
+                
             } else {
                 document.getElementById('guessOfPlayer').style.visibility = 'hidden';
+                img.src = 'assets/img/smileCorrect.jpg';
                 document.getElementById("displayStatus").innerHTML = "La lettre est correcte:<br>" + answerArray.join(" ")
                  +  "<br>Il vous reste essais: " + turnCount;
-                 document.getElementById("showAlreadyUsedLetters").innerHTML = 'Les lettres utilisées:<br>' + alreadyUsedLetters.join(', ');;
+                
         }
+        document.getElementById("showAlreadyUsedLetters").innerHTML = 'Les lettres utilisées:<br>' + alreadyUsedLetters.join(', ');;
         }
     }
     return newGameState = {
@@ -65,14 +80,17 @@ function openLettersAndNotify(guess, word, answerArray, remainingLetters) {
 }
 
 function showAnswerAndRatePlayer(turnCount, word) {
-    if (turnCount == 0) {
+    img.style.visibility = 'visible';
+    if (turnCount <= 0) {
+        img.src = 'assets/img/smileTrist.jpg';
         document.getElementById("displayStatus").innerHTML = "Malheureusement, les tentatives sont épuisées ! Un mot perplexe : \""
          + word + "\".";
     } else {
-        document.getElementById("displayStatus").innerHTML = "Victoire!  Bravo à vous!";
+        img.src = 'assets/img/victoire.jpg';
+        document.getElementById("displayStatus").innerHTML = "Victoire!  Bravo à vous! Un mot perplexe : \"" + word + "\".";
     }
     document.getElementById("guessOfPlayer").style.display = 'none';
-    document.getElementById("interactWithPlayer").style.display = 'none';
+    // document.getElementById("interactWithPlayer").style.display = 'none';
     document.getElementById("confirmActions").style.display = 'none';
     document.getElementById("exitButton").style.display = 'none';
     document.getElementById("restartGame").style.visibility = 'visible';
@@ -81,6 +99,7 @@ function showAnswerAndRatePlayer(turnCount, word) {
 
 function confirmActions(word, answerArray) {
     document.getElementById('guessOfPlayer').style.visibility = 'visible';
+    img.style.visibility = 'hidden';
     document.getElementById('guessOfPlayer').focus();
     if (counterOfConfirmActions % 2 == 0) {
         
@@ -107,15 +126,6 @@ function confirmActions(word, answerArray) {
 
 }
 
-let alreadyUsedLetters = [];
-let word = pickWord(words);
-let remainingLetters = word.length;
-let answerArray = setupAnswerArray(word);
-
-function startGame(turnCount, answerArray) {
-    greeting(turnCount, answerArray);
-}
-
 function exitGame(word) {
     document.getElementById("displayStatus").innerHTML = "C'est dommage de vous voir partir. Un mot perplexe : " + word + ".";
     document.getElementById("guessOfPlayer").style.visibility = 'hidden';
@@ -124,6 +134,7 @@ function exitGame(word) {
     document.getElementById("exitButton").style.display = 'none';
     document.getElementById("restartGame").style.visibility = 'visible';
     document.getElementById('stopButton').style.visibility = 'visible';
+    img.src = 'assets/img/smileTrist.jpg';
 }
 
 document.getElementById('stopButton').addEventListener('click', () => {
